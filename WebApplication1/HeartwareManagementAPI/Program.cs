@@ -1,3 +1,6 @@
+using BusinessObjects.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace HeartwareManagementAPI;
 
 public class Program
@@ -10,7 +13,11 @@ public class Program
         builder.Services.AddAuthorization();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddDbContext<MyDbContext>(options => 
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
+        
         builder.Services.AddEndpointsApiExplorer();
+        
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
