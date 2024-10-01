@@ -45,7 +45,9 @@ public partial class MyDbContext : DbContext
         IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", true, true).Build();
+#pragma warning disable CS8603 // Possible null reference return.
         return configuration["ConnectionStrings:Local"];
+#pragma warning restore CS8603 // Possible null reference return.
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
