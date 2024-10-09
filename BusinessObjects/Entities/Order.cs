@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessObjects.HeartwareENUM;
 
 namespace BusinessObjects.Entities;
 
@@ -14,9 +13,9 @@ public partial class Order
 
     public DateTime? ConfirmDate { get; set; }
 
-    public Enum_OrderStatus? OrderStatus { get; set; }
+    public int? OrderStatus { get; set; }
 
-    public Enum_PaymentMethod? PaymentMethod { get; set; }
+    public int? PaymentMethod { get; set; }
 
     public int? DiscountId { get; set; }
 
@@ -35,6 +34,4 @@ public partial class Order
     public virtual Discount? Discount { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
-
-    public virtual ICollection<Shipping> Shippings { get; set; } = new List<Shipping>();
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinessObjects.HeartwareENUM;
 
 namespace BusinessObjects.Entities;
 
@@ -18,7 +17,7 @@ public partial class Product
 
     public int? CategoryId { get; set; }
 
-    public Enum_ProductStatus? ProductStatus { get; set; }
+    public int? ProductStatus { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

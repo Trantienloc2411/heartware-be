@@ -45,9 +45,9 @@ public partial class MyDbContext : DbContext
         IConfiguration configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", true, true).Build();
-#pragma warning disable CS8603 // Possible null reference return.
+        #pragma warning disable CS8603 // Possible null reference return.
         return configuration["ConnectionStrings:Local"];
-#pragma warning restore CS8603 // Possible null reference return.
+        #pragma warning restore CS8603 // Possible null reference return.
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -176,16 +176,14 @@ public partial class MyDbContext : DbContext
 
             entity.ToTable("Shipping");
 
+            entity.HasIndex(e => e.OrderId, "UQ_Shipping_OrderId").IsUnique();
+
             entity.Property(e => e.ShippingId).ValueGeneratedNever();
             entity.Property(e => e.CancelDate).HasColumnType("datetime");
             entity.Property(e => e.EndShipDate).HasColumnType("datetime");
             entity.Property(e => e.ShippingAddress).HasMaxLength(255);
             entity.Property(e => e.StartShipDate).HasColumnType("datetime");
             entity.Property(e => e.TrackingNumber).HasMaxLength(50);
-
-            entity.HasOne(d => d.Order).WithMany(p => p.Shippings)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK_Order_Shipping");
         });
 
         modelBuilder.Entity<User>(entity =>
