@@ -7,7 +7,7 @@ using Repository.Implement;
 
 namespace HeartwareManagementAPI.Controllers;
 [ApiController]
-[Route("[Order]")]
+[Route("[controller]")]
 public class OrderControllers : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
