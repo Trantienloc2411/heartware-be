@@ -1,7 +1,6 @@
 using System;
 
 namespace HeartwareManagementAPI.DTOs.User;
-
 public class AddUser
 {
     public Guid UserId { get; set; }

@@ -25,8 +25,5 @@ namespace HeartwareManagementAPI.Controllers
         {
             return  _unitOfWork.UserRepository.GetAll(); 
         }
-
-        
-
     }
 }
