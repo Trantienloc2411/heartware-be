@@ -18,6 +18,4 @@ public partial class Shipping
     public DateTime? CancelDate { get; set; }
 
     public string? TrackingNumber { get; set; }
-
-    public virtual Order? Order { get; set; }
 }
