@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using BusinessObjects.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects.Context;
 
@@ -38,17 +37,9 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer
-            (GetConnectionString());
-    private string GetConnectionString()
-    {
-        IConfiguration configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", true, true).Build();
-        #pragma warning disable CS8603 // Possible null reference return.
-        return configuration["ConnectionStrings:Local"];
-        #pragma warning restore CS8603 // Possible null reference return.
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(local);Database=MyStore;User Id=sa;Password=Trongtin1701;Trusted_Connection=False;TrustServerCertificate=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Category>(entity =>
@@ -67,12 +58,8 @@ public partial class MyDbContext : DbContext
             entity.ToTable("Discount");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.DiscountCode)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-            entity.Property(e => e.DiscountName)
-                .HasMaxLength(100)
-                .IsUnicode(false);
+            entity.Property(e => e.DiscountCode).HasMaxLength(10);
+            entity.Property(e => e.DiscountName).HasMaxLength(10);
             entity.Property(e => e.DiscountValue).HasColumnType("decimal(4, 2)");
             entity.Property(e => e.ExpiredDate).HasColumnType("datetime");
         });
@@ -121,13 +108,9 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Description)
-                .HasMaxLength(500)
-                .IsUnicode(false);
+            entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.ProductName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+            entity.Property(e => e.ProductName).HasMaxLength(255);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
@@ -197,18 +180,12 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(125)
                 .IsUnicode(false);
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(125)
-                .IsUnicode(false);
+            entity.Property(e => e.FirstName).HasMaxLength(125);
             entity.Property(e => e.Image)
                 .HasMaxLength(300)
                 .IsUnicode(false);
-            entity.Property(e => e.LastName)
-                .HasMaxLength(125)
-                .IsUnicode(false);
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.Property(e => e.LastName).HasMaxLength(125);
+            entity.Property(e => e.Username).HasMaxLength(125);
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)
