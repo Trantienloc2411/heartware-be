@@ -30,6 +30,7 @@ namespace HeartwareManagementAPI.Controllers
             return _unitOfWork.UserRepository.GetAll();
         }
 
+
         [HttpGet("{id}")]
         public async Task<User> Get(Guid id)
         {
@@ -51,5 +52,6 @@ namespace HeartwareManagementAPI.Controllers
             }
         }
 
+    }
 }
-}
+
