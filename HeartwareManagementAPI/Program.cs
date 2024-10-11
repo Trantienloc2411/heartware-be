@@ -1,6 +1,7 @@
 using BusinessObjects.Context;
 using Microsoft.EntityFrameworkCore;
 using Repository.Implement;
+using Service.Services;
 
 namespace HeartwareManagementAPI;
 

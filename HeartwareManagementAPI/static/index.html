@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Order Complete</title>
+    <style>
+      /* Add some basic styling to make the email look decent */
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .button {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 style="text-align: center;">Đặt đơn hàng thành công</h2>
+      <p>Kính gửi, {{Fullname}},</p>
+      <p>Chúng tôi xác nhận đơn hàng này đã được đặt thành công, </p>
+      <p>Thông tin đơn hàng</p>
+      <ul>
+        <li>Mã đơn hàng: {{OrderId}}</li>
+        <li>Ngày đặt hàng: {{OrderDate}}</li>
+        <li>Số tiền: {{Total}}</li>
+      </ul>
+      <p>Để xem thông tin chi tiết về đơn hàng của bạn hãy truy cập vào nút bên dưới:</p>
+      <a href="http://f1nn.id.vn/TrackingOrder/{{OrderId}}" class="button">Xem đơn hàng chi tiết</a>
+      <p>Cảm ơn bạn đã đặt hàng bên chúng tôi. Nếu có những khúc mắc xin đừng ngần ngại liên hệ với chúng tôi</p>
+      <p>Trân Trọng,</p>
+      <p>Heartware</p>
+    </div>
+  </body>
+</html>
