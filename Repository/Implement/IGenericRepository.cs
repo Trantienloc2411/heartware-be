@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using Microsoft.Data.SqlClient;
 
 namespace Repository.Implement;
 
@@ -23,7 +24,7 @@ public interface IGenericRepository<T> where T : class
         void Update(T entityToUpdate);
 
         IEnumerable<T> GetAll();
-
+        IEnumerable<TResult> ExecuteStoredProcedure<TResult>(string storedProcedure, params SqlParameter[] parameters) where TResult : class, new();
         Task<T> GetSingleWithIncludeAsync(
             Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includeProperties);

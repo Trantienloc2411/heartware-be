@@ -1,6 +1,8 @@
 using System;
+using System.Data;
 using System.Linq.Expressions;
 using BusinessObjects.Context;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Implement;
@@ -149,4 +151,39 @@ public class GenericRepositiory<TEntity> : IGenericRepository<TEntity> where TEn
     {
         _dbSet.AddRange(entities);
     }
+    
+    public IEnumerable<TResult> ExecuteStoredProcedure<TResult>(string storedProcedure, params SqlParameter[] parameters) where TResult : class, new()
+    {
+        using (var command = _context.Database.GetDbConnection().CreateCommand())
+        {
+            command.CommandText = storedProcedure;
+            command.CommandType = CommandType.StoredProcedure;
+
+            if (parameters != null && parameters.Length > 0)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
+            _context.Database.OpenConnection();
+
+            using (var result = command.ExecuteReader())
+            {
+                var entities = new List<TResult>();
+                while (result.Read())
+                {
+                    var entity = new TResult();
+                    foreach (var property in typeof(TResult).GetProperties())
+                    {
+                        if (!result.IsDBNull(result.GetOrdinal(property.Name)))
+                        {
+                            property.SetValue(entity, result[property.Name]);
+                        }
+                    }
+                    entities.Add(entity);
+                }
+                return entities;
+            }
+        }
+    }
+
 }
