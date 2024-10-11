@@ -4,6 +4,7 @@ using BusinessObjects.Entities;
 using HeartwareManagementAPI.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Implement;
+using Service.Services;
 
 namespace HeartwareManagementAPI.Controllers;
 [ApiController]
@@ -11,18 +12,22 @@ namespace HeartwareManagementAPI.Controllers;
 public class OrderControllers : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
+
     private readonly IMapper _mapper;
 
-    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IConfiguration _configuration;
+
+    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
+        _configuration = configuration;
         _mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Order>> Get()
     {
-        var list = await _unitOfWork.OrderRepository.GetAllWithIncludeAsync(t => true, 
+        var list = await _unitOfWork.OrderRepository.GetAllWithIncludeAsync(t => true,
             t => t.Discount);
 
         return list;
@@ -31,10 +36,10 @@ public class OrderControllers : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        var order = await _unitOfWork.OrderRepository.GetSingleWithIncludeAsync(t => t.OrderId == id, 
+        var order = await _unitOfWork.OrderRepository.GetSingleWithIncludeAsync(t => t.OrderId == id,
             t => t.OrderDetails, t => t.Discount);
-        
-        var result = _mapper.Map<GetOrderById>(order); 
+
+        var result = _mapper.Map<GetOrderById>(order);
 
         return Ok(result);
     }
@@ -42,13 +47,13 @@ public class OrderControllers : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Order>> Post(AddOrder order)
     {
-        
+
         using (var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
         {
             try
             {
                 Order o = new Order();
-                
+
                 OrderDetail od;
 
                 o.OrderId = Guid.NewGuid();
@@ -58,12 +63,12 @@ public class OrderControllers : ControllerBase
                 o.OrderStatus = 1;
                 o.PaymentMethod = order.PaymentMethod;
                 o.DiscountId = order.DiscountId;
-                o.TotalAmount = order.TotalAmount;  
+                o.TotalAmount = order.TotalAmount;
                 o.FirstName = order.FirstName;
                 o.LastName = order.LastName;
-                o.Email = order.Address;
-                o.Phone = order.Phone;  
-                o.Address = order.Address;  
+                o.Email = order.Email;
+                o.Phone = order.Phone;
+                o.Address = order.Address;
 
                 _unitOfWork.OrderRepository.Insert(o);
                 _unitOfWork.Save();
@@ -72,10 +77,10 @@ public class OrderControllers : ControllerBase
                 foreach (var item in order.OrderDetails)
                 {
                     od = new OrderDetail();
-                    od.OrderDetailId = Guid.NewGuid();  
+                    od.OrderDetailId = Guid.NewGuid();
                     od.OrderId = o.OrderId;
                     od.ProductId = item.ProductId;
-                    od.Quantity = item.Quantity;    
+                    od.Quantity = item.Quantity;
                     od.Price = item.Price;
                     od.Subtotal = item.Subtotal;
                     _unitOfWork.OrderDetailRepository.Insert(od);
@@ -83,8 +88,20 @@ public class OrderControllers : ControllerBase
                 }
 
                 transaction.Complete();
-                
-                return  Ok();
+                string fullname = o.FirstName + o.LastName;
+                SentMail.SendMail(
+                    _configuration,
+                    o.Email,
+                    fullname,
+                    o.OrderId.ToString(),
+                    DateTime.Now,
+                    (decimal)o.TotalAmount
+                );
+
+
+
+
+                return Ok();
             }
             catch (System.Exception ex)
             {
@@ -108,7 +125,7 @@ public class OrderControllers : ControllerBase
             try
             {
                 var o = _unitOfWork.OrderRepository.GetByID(order.Id);
-                if(o == null) return NotFound("Can't find this order");
+                if (o == null) return NotFound("Can't find this order");
                 o.UserId = order.UserId;
                 o.ConfirmDate = order.ConfirmDate;
                 o.OrderStatus = order.OrderStatus;
@@ -127,9 +144,9 @@ public class OrderControllers : ControllerBase
             }
         }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 }
