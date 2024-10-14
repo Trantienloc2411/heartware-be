@@ -21,6 +21,8 @@ public class AddOrder
 
     public string? Address { get; set; }
 
+    
+
     public virtual ICollection<AddOrderDetail> OrderDetails { get; set; } = new List<AddOrderDetail>();
 }
 public class AddOrderDetail 

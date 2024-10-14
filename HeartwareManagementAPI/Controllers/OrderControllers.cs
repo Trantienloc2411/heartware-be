@@ -1,10 +1,13 @@
+using System.Text.RegularExpressions;
 using System.Transactions;
 using AutoMapper;
 using BusinessObjects.Entities;
 using HeartwareManagementAPI.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Implement;
+using Service.IService;
 using Service.Services;
+using Service.viewModels;
 
 namespace HeartwareManagementAPI.Controllers;
 [ApiController]
@@ -17,11 +20,15 @@ public class OrderControllers : ControllerBase
 
     private readonly IConfiguration _configuration;
 
-    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration)
+    private readonly IPayment _payment;
+    
+
+    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, IPayment payment)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
         _mapper = mapper;
+        _payment = payment;
     }
 
     [HttpGet]
@@ -97,6 +104,25 @@ public class OrderControllers : ControllerBase
                     DateTime.Now,
                     (decimal)o.TotalAmount
                 );
+
+                if(order.PaymentMethod == 1)
+                {
+                    string orderId = Regex.Replace(o.OrderId.ToString(), @"\D", "");
+
+                    if(orderId.Length > 10) {
+                        orderId = orderId.Substring(0,8);
+                    }
+
+                    PaymentRequestLinkViewModel pay = new PaymentRequestLinkViewModel();
+                    pay.orderId = orderId;
+                    pay.description = "Order for id " + orderId;
+                    pay.priceTotal =  Convert.ToInt32(o.TotalAmount);
+                    string paymentlink = await _payment.CreatePaymentLink(pay);
+                    return Ok(paymentlink);
+                }
+                else{
+                    
+                }
 
 
 
