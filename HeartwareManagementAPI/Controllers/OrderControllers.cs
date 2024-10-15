@@ -171,6 +171,13 @@ public class OrderControllers : ControllerBase
         }
     }
 
+    [HttpPost("GetPaymentLinkInformation/{id}")]
+    public async Task<IActionResult> GetPaymentLinkInformation(long id)
+    {
+        var result = await _payment.GetPaymentInformation(id);
+        return Ok(result);
+    }
+
 
 
 

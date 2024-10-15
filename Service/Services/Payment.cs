@@ -67,4 +67,10 @@ public class Payment : IPayment
             throw;
         }
     }
+
+    public async Task<PaymentLinkInformation> GetPaymentInformation(long paymentId)
+    {
+        PaymentLinkInformation paymentLinkInformation = await _payOs.getPaymentLinkInformation(paymentId);
+        return paymentLinkInformation;
+    }
 }
