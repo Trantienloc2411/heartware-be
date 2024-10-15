@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BusinessObjects.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects.Context;
 
@@ -38,7 +39,17 @@ public partial class MyDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(local);Database=MyStore;User Id=sa;Password=Trantienloc2411;Trusted_Connection=False;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer(GetConnectionString());
+
+
+    private string GetConnectionString()
+    {
+        IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true).Build();
+        return configuration["ConnectionStrings:Deploy"];
+    }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

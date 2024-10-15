@@ -11,4 +11,6 @@ public interface IPayment
 
     Task<PaymentLinkInformation> CancelOrder(string orderId);
 
+    Task<PaymentLinkInformation> GetPaymentInformation(long paymentId);
+
 }
