@@ -17,6 +17,9 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
 
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+
         IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
 
@@ -59,4 +62,7 @@ public class Program
 
         app.Run();
     }
+
+
+
 }
