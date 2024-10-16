@@ -47,12 +47,9 @@ public class Program
         });
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
+        
 
         app.UseHttpsRedirection();
 
@@ -62,7 +59,5 @@ public class Program
 
         app.Run();
     }
-
-
-
 }
+

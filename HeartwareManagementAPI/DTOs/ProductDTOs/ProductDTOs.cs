@@ -22,4 +22,7 @@ public class ProductDTOs
     public DateTime? UpdatedDate { get; set; }
 
     public string? ImageUrl { get; set; }
+    public int? ReviewId { get; set; }  
+    public string Content { get; set; }
+    public int? Rating { get; set; }
 }
