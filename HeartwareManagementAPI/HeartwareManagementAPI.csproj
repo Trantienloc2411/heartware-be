@@ -19,11 +19,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\static\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="wwwroot\static\index.html" />
-    </ItemGroup>
+     <Content Include="wwwroot\**\*">
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </Content>
+   </ItemGroup>
+   
 
 </Project>
