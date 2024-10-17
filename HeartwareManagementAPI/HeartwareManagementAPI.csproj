@@ -19,7 +19,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="static/" />
+      <Folder Include="wwwroot\static\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\static\index.html" />
     </ItemGroup>
 
 </Project>
