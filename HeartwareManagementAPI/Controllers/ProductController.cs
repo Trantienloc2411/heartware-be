@@ -21,15 +21,30 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetAllProducts()
+    public async Task<IEnumerable<Product>> GetAllProducts()
     {
-        var products = _unitOfWork.ProductRepository.ExecuteStoredProcedure<ProductDTOs>("GetAllProducts");
-        return Ok(products);
+        var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p=> true,
+            p=> p.Reviews);
+        return products;
+    }
+    
+    [HttpGet("id")]
+    public async Task<IActionResult> GetProductById(Guid id)
+    {
+        var product = await _unitOfWork.ProductRepository.GetSingleWithIncludeAsync(t => t.ProductId == id,
+            t => t.Reviews);
+
+        var result = _mapper.Map<ProductDTOs>(product);
+
+        return Ok(result);
     }
 
     [HttpPost]
     public IActionResult CreateProduct([FromBody] AddProductDTO addProductDto)
     {
+        var trimmedImageUrl = string.IsNullOrEmpty(addProductDto.ImageUrl) 
+            ? null 
+            : addProductDto.ImageUrl.Trim(' ', ',');
         var newProduct = new Product
         {
             ProductId = Guid.NewGuid(),
@@ -38,7 +53,7 @@ public class ProductController : ControllerBase
             Price = addProductDto.Price,
             UnitsInStock = addProductDto.UnitsInStock,
             CategoryId = addProductDto.CategoryId,
-            ImageUrl = addProductDto.ImageUrl,
+            ImageUrl = trimmedImageUrl,
             ProductStatus= (int)addProductDto.ProductStatus,
             CreatedDate = DateTime.UtcNow,
         };
