@@ -4,6 +4,7 @@ using BusinessObjects.Entities;
 using HeartwareManagementAPI.DTOs;
 using HeartwareManagementAPI.DTOs.Discount;
 using HeartwareManagementAPI.DTOs.Order;
+using HeartwareManagementAPI.DTOs.ProductDTO;
 using HeartwareManagementAPI.DTOs.User;
 using Microsoft.OpenApi.Any;
 
@@ -24,6 +25,7 @@ public class MappingProfile : Profile
         //Discount
         CreateMap<DiscountGetFromOrder, Discount>().ReverseMap();
         
-
+        //Product
+        CreateMap<ProductDTOs, Product>().ReverseMap();
     }
 }

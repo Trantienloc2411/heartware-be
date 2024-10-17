@@ -9,9 +9,7 @@ namespace Repository.Implement;
 
 public class GenericRepositiory<TEntity> : IGenericRepository<TEntity> where TEntity : class
 {
-
-
-
+    
     protected MyDbContext _context;
     protected DbSet<TEntity> _dbSet;
 
