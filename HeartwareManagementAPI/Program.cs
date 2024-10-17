@@ -17,6 +17,9 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
 
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+
         IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
 
@@ -44,15 +47,12 @@ public class Program
         });
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
+        
 
         app.UseHttpsRedirection();
-
+        app.UseStaticFiles();
         app.UseAuthorization();
         app.UseCors(CORS_CONFIG);
         app.MapControllers();
@@ -60,3 +60,4 @@ public class Program
         app.Run();
     }
 }
+

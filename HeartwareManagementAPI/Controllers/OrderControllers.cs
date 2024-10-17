@@ -1,9 +1,11 @@
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Transactions;
 using AutoMapper;
 using BusinessObjects.Entities;
 using HeartwareManagementAPI.DTOs.Order;
 using Microsoft.AspNetCore.Mvc;
+using Net.payOS.Types;
 using Repository.Implement;
 using Service.IService;
 using Service.Services;
@@ -21,14 +23,17 @@ public class OrderControllers : ControllerBase
     private readonly IConfiguration _configuration;
 
     private readonly IPayment _payment;
+
+    private readonly ILogger<OrderControllers> _logger;
     
 
-    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, IPayment payment)
+    public OrderControllers(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration configuration, IPayment payment, ILogger<OrderControllers> logger)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
         _mapper = mapper;
         _payment = payment;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -47,6 +52,8 @@ public class OrderControllers : ControllerBase
             t => t.OrderDetails, t => t.Discount);
 
         var result = _mapper.Map<GetOrderById>(order);
+        
+        
 
         return Ok(result);
     }
@@ -171,6 +178,22 @@ public class OrderControllers : ControllerBase
         }
     }
 
+    [HttpPost("GetPaymentLinkInformation")]
+    public async Task<IActionResult> GetPaymentLinkInformation([FromBody] WebhookType webhookType)
+    {
+        try
+        {
+            _logger.LogInformation($"Requesting payment information for ID: {webhookType.data.orderCode}");
+            var result = await _payment.GetPaymentInformation(webhookType);
+            _logger.LogInformation($"Received payment information: {JsonSerializer.Serialize(result)}");
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error getting payment information: {ex.Message}");
+            return StatusCode(500, "An error occurred while processing your request.");
+        }
+    }
 
 
 
