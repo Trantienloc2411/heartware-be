@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include="static\index.html" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
@@ -19,11 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\static\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="wwwroot\static\index.html" />
+      <Folder Include="static\" />
     </ItemGroup>
 
 </Project>
