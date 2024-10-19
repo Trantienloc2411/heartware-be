@@ -2,6 +2,7 @@ using AutoMapper;
 using BusinessObjects.Entities;
 using BusinessObjects.HeartwareENUM;
 using HeartwareManagementAPI.DTOs.ProductDTO;
+using HeartwareManagementAPI.DTOs.ReviewDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 using Repository.Implement;
@@ -21,20 +22,23 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IEnumerable<Product>> GetAllProducts()
+    public async Task<IEnumerable<ProductDTO>> GetAllProducts()
     {
-        var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p=> true,
-            p=> p.Reviews);
-        return products;
+        var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p => true,
+            p => p.Reviews,
+            p => p.Category);
+        var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+        return productDTOs;
     }
     
     [HttpGet("id")]
     public async Task<IActionResult> GetProductById(Guid id)
     {
         var product = await _unitOfWork.ProductRepository.GetSingleWithIncludeAsync(t => t.ProductId == id,
-            t => t.Reviews);
+            t => t.Reviews,
+            c => c.Category);
 
-        var result = _mapper.Map<ProductDTOs>(product);
+        var result = _mapper.Map<ProductDTO>(product);
 
         return Ok(result);
     }
