@@ -43,4 +43,37 @@ public class ShippingController : ControllerBase
          _unitOfWork.Save();
          return Ok();
     }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateShipping(Guid id,[FromBody] UpdateShippingDTO shipping )
+    {
+        var existingShipping = _unitOfWork.ShippingRepository.GetByID(id);
+        if (existingShipping == null)
+        {
+            return BadRequest("Shipping not found");
+        }
+
+        existingShipping.ShippingAddress = shipping.ShippingAddress;
+        existingShipping.StartShipDate = shipping.StartShipDate;
+        existingShipping.EndShipDate = shipping.EndShipDate;
+        existingShipping.CancelDate = shipping.CancelDate;
+        
+        _unitOfWork.ShippingRepository.Update(existingShipping);
+        _unitOfWork.Save();
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteShipping(Guid id)
+    {
+        var existingShipping = _unitOfWork.ShippingRepository.GetByID(id);
+        if (existingShipping == null)
+        {
+            return BadRequest("Shipping not found");    
+        }
+        
+        _unitOfWork.ShippingRepository.Delete(existingShipping);
+        _unitOfWork.Save();
+        return Ok();
+    }
 }
