@@ -37,7 +37,8 @@ public class ProductController : ControllerBase
     {
         var product = await _unitOfWork.ProductRepository.GetSingleWithIncludeAsync(t => t.ProductId == id,
             t => t.Reviews,
-            c => c.Category);
+            c => c.Category,
+            pd=> pd.ProductDetails);
 
         var result = _mapper.Map<ProductDTO>(product);
 
