@@ -2,8 +2,10 @@ using BusinessObjects.HeartwareENUM;
 
 namespace HeartwareManagementAPI.DTOs.ProductDTO;
 
-public class AddProductDTO
+public class UpdateProductDTO
 {
+    public Guid? ProductId { get; set; }
+    
     public string? ProductName { get; set; }
 
     public string? Description { get; set; }
@@ -17,5 +19,6 @@ public class AddProductDTO
     public Enum_ProductStatus? ProductStatus { get; set; }
 
     public string? ImageUrl { get; set; }
-    public ICollection<AddProductDetailsDTO>? ProductDetails { get; set; } = new List<AddProductDetailsDTO>();    
+    
+    public ICollection<UpdateProductDetailDTO>? ProductDetails { get; set; } = new List<UpdateProductDetailDTO>(); 
 }
