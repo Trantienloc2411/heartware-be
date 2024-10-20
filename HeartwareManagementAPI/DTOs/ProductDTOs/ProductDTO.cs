@@ -1,6 +1,8 @@
+using HeartwareManagementAPI.DTOs.ReviewDTOs;
+
 namespace HeartwareManagementAPI.DTOs.ProductDTO;
 
-public class ProductDTOs
+public class ProductDTO
 {
     public Guid ProductId { get; set; }
 
@@ -13,6 +15,7 @@ public class ProductDTOs
     public int? UnitsInStock { get; set; }
 
     public int? CategoryId { get; set; }
+    
     public string CategoryName { get; set; }
 
     public int? ProductStatus { get; set; }
@@ -22,7 +25,5 @@ public class ProductDTOs
     public DateTime? UpdatedDate { get; set; }
 
     public string? ImageUrl { get; set; }
-    public int? ReviewId { get; set; }  
-    public string Content { get; set; }
-    public int? Rating { get; set; }
+    public ICollection<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using BusinessObjects.Entities;
 using BusinessObjects.HeartwareENUM;
 using HeartwareManagementAPI.DTOs.ProductDTO;
+using HeartwareManagementAPI.DTOs.ReviewDTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 using Repository.Implement;
@@ -21,15 +22,33 @@ public class ProductController : ControllerBase
     }
     
     [HttpGet]
-    public IActionResult GetAllProducts()
+    public async Task<IEnumerable<ProductDTO>> GetAllProducts()
     {
-        var products = _unitOfWork.ProductRepository.ExecuteStoredProcedure<ProductDTOs>("GetAllProducts");
-        return Ok(products);
+        var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p => true,
+            p => p.Reviews,
+            p => p.Category);
+        var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+        return productDTOs;
+    }
+    
+    [HttpGet("id")]
+    public async Task<IActionResult> GetProductById(Guid id)
+    {
+        var product = await _unitOfWork.ProductRepository.GetSingleWithIncludeAsync(t => t.ProductId == id,
+            t => t.Reviews,
+            c => c.Category);
+
+        var result = _mapper.Map<ProductDTO>(product);
+
+        return Ok(result);
     }
 
     [HttpPost]
     public IActionResult CreateProduct([FromBody] AddProductDTO addProductDto)
     {
+        var trimmedImageUrl = string.IsNullOrEmpty(addProductDto.ImageUrl) 
+            ? null 
+            : addProductDto.ImageUrl.Trim(' ', ',');
         var newProduct = new Product
         {
             ProductId = Guid.NewGuid(),
@@ -38,7 +57,7 @@ public class ProductController : ControllerBase
             Price = addProductDto.Price,
             UnitsInStock = addProductDto.UnitsInStock,
             CategoryId = addProductDto.CategoryId,
-            ImageUrl = addProductDto.ImageUrl,
+            ImageUrl = trimmedImageUrl,
             ProductStatus= (int)addProductDto.ProductStatus,
             CreatedDate = DateTime.UtcNow,
         };

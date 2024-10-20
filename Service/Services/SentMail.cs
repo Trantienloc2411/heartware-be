@@ -13,7 +13,7 @@ public static class SentMail
         try
         {
             // Read HTML template from file
-            string htmlTemplate = File.ReadAllText("static/index.html");
+            string htmlTemplate = File.ReadAllText("wwwroot/static/index.html");
 
             // Replace placeholders in the HTML template
             string body = htmlTemplate

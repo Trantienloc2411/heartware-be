@@ -52,7 +52,7 @@ public class Program
         
 
         app.UseHttpsRedirection();
-
+        app.UseStaticFiles();
         app.UseAuthorization();
         app.UseCors(CORS_CONFIG);
         app.MapControllers();
