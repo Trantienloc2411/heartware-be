@@ -46,7 +46,7 @@ public partial class MyDbContext : DbContext
         IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true).Build();
-        return configuration["ConnectionStrings:Local"];
+        return configuration["ConnectionStrings:Deploy"];
     }
 
 
