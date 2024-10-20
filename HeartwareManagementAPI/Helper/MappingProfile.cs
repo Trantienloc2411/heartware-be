@@ -31,6 +31,10 @@ public class MappingProfile : Profile
         CreateMap<Product, ProductDTO>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.CategoryName))
             .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews))
+            .ForMember(dest => dest.ProductDetails, opt => opt.MapFrom(src => src.ProductDetails))
+            .ReverseMap();
+        CreateMap<Product, UpdateProductDTO>()
+            .ForMember(dest => dest.ProductDetails, opt => opt.MapFrom(src => src.ProductDetails))
             .ReverseMap();
         
         //Review
@@ -40,5 +44,11 @@ public class MappingProfile : Profile
         
         //Shipping
         CreateMap<Shipping, ShippingDTO>().ReverseMap();
+        
+        //ProductDetails
+        CreateMap<ProductDetail, ProductDetailsDTO>()
+            .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+            .ReverseMap(); 
+        CreateMap<ProductDetail, UpdateProductDetailDTO>().ReverseMap(); 
     }
 }
