@@ -26,4 +26,5 @@ public class ProductDTO
 
     public string? ImageUrl { get; set; }
     public ICollection<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
+    public ICollection<ProductDetailsDTO> ProductDetails { get; set; } = new List<ProductDetailsDTO>();
 }

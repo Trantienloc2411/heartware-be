@@ -22,6 +22,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="DTOs\ProductDetailDTOs\" />
+      <Folder Include="wwwroot\static\" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Include="wwwroot\static\index.html" />
     </ItemGroup>
 

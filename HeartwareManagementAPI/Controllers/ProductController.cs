@@ -26,7 +26,8 @@ public class ProductController : ControllerBase
     {
         var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p => true,
             p => p.Reviews,
-            p => p.Category);
+            p => p.Category,
+            pd=>pd.ProductDetails);
         var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
         return productDTOs;
     }
@@ -36,7 +37,8 @@ public class ProductController : ControllerBase
     {
         var product = await _unitOfWork.ProductRepository.GetSingleWithIncludeAsync(t => t.ProductId == id,
             t => t.Reviews,
-            c => c.Category);
+            c => c.Category,
+            pd=> pd.ProductDetails);
 
         var result = _mapper.Map<ProductDTO>(product);
 
@@ -62,26 +64,60 @@ public class ProductController : ControllerBase
             CreatedDate = DateTime.UtcNow,
         };
         _unitOfWork.ProductRepository.Insert(newProduct);
+
+        // Add ProductDetails
+        if (addProductDto.ProductDetails != null && addProductDto.ProductDetails.Any())
+        {
+            foreach (var detail in addProductDto.ProductDetails)
+            {
+                var newProductDetail = new ProductDetail
+                {
+                    ProductParam = detail.ProductParam,
+                    ProductValue = detail.ProductValue,
+                    ProductId = newProduct.ProductId,
+                };
+                _unitOfWork.ProductDetailRepository.Insert(newProductDetail);
+            }
+        }
+
+
         _unitOfWork.Save();
         return Ok();
     }
 
-    [HttpPut("{id}")]
-    public IActionResult UpdateProduct(Guid id, [FromBody] AddProductDTO addProductDto)
+    [HttpPut]
+    public IActionResult UpdateProduct([FromBody] UpdateProductDTO updateProductDto)
     {
-        var existingProduct= _unitOfWork.ProductRepository.GetByID(id);
+        var existingProduct= _unitOfWork.ProductRepository.GetByID(updateProductDto.ProductId);
         if (existingProduct == null)
         {
-            return BadRequest($"Product with id {id} does not exist");
+            return BadRequest($"Product with id {updateProductDto.ProductId} does not exist");
         }
         
         var createdDate = existingProduct.CreatedDate;
-        _mapper.Map(addProductDto, existingProduct);
+        _mapper.Map(updateProductDto, existingProduct);
         
         existingProduct.CreatedDate = createdDate;
         existingProduct.UpdatedDate = DateTime.UtcNow;
-        
-        
+
+        if (updateProductDto.ProductDetails != null && updateProductDto.ProductDetails.Any())
+        {
+            foreach (var updatedDetailDto in updateProductDto.ProductDetails)
+            {
+                var existingProductDetail = existingProduct.ProductDetails
+                    .FirstOrDefault(detail => detail.ProductDetailId == updatedDetailDto.ProductDetailId);
+
+                if (existingProductDetail != null)
+                {
+                    _mapper.Map(updatedDetailDto, existingProductDetail);
+                }
+                else
+                {
+                    return BadRequest($"Product detail with id {updatedDetailDto.ProductDetailId} does not exist");
+                }
+            }
+        }
+
         _unitOfWork.ProductRepository.Update(existingProduct);
         _unitOfWork.Save();
 
