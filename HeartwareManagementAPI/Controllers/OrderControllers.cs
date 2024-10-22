@@ -103,7 +103,7 @@ public class OrderControllers : ControllerBase
 
                 transaction.Complete();
                 string fullname = o.FirstName + o.LastName;
-                SentMail.SendMail(
+                SentMail.SendMailOrder(
                     _configuration,
                     o.Email,
                     fullname,
@@ -157,13 +157,27 @@ public class OrderControllers : ControllerBase
         {
             try
             {
-                var o = _unitOfWork.OrderRepository.GetByID(order.Id);
+                var o = await _unitOfWork.OrderRepository.GetSingleWithIncludeAsync(c => c.OrderId == order.Id, t => t.OrderDetails, t => t.Discount);
+
+                var s = await _unitOfWork.ShippingRepository.GetSingleWithIncludeAsync(c => c.OrderId == order.Id,
+                    t => t.Order);
                 if (o == null) return NotFound("Can't find this order");
-                o.UserId = order.UserId;
-                o.ConfirmDate = order.ConfirmDate;
+                s.Order.UserId = order.UserId;
+                s.Order.ConfirmDate = order.ConfirmDate;
                 o.OrderStatus = order.OrderStatus;
 
-
+                if (order.OrderStatus == 3)
+                {
+                    SentMail.SentMailComplete(
+                        _configuration,
+                        o.Email,
+                        o.FirstName + " " + o.LastName,
+                        o.OrderId.ToString(),
+                        (DateTime) s.EndShipDate,
+                        (decimal) o.TotalAmount,
+                        o.Address);
+                }
+                
                 _unitOfWork.OrderRepository.Update(o);
                 _unitOfWork.Save();
 

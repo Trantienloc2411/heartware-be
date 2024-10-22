@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Entities;
 
@@ -16,6 +17,6 @@ public partial class Review
     public Guid? UserId { get; set; }
 
     public DateTime? CreatedDate { get; set; }
-
+       
     public virtual Product? Product { get; set; }
 }
