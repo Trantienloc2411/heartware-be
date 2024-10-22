@@ -27,8 +27,8 @@
 		<Folder Include="wwwroot\static\" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Include="wwwroot\static\index.html" />
-	</ItemGroup>
+    <ItemGroup>
+      <None Include="wwwroot\static\index.html" />
+    </ItemGroup>
 
 </Project>
