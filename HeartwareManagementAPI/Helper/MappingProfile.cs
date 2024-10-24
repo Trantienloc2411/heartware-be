@@ -2,6 +2,7 @@ using System;
 using AutoMapper;
 using BusinessObjects.Entities;
 using HeartwareManagementAPI.DTOs;
+using HeartwareManagementAPI.DTOs.CategoryDTOs;
 using HeartwareManagementAPI.DTOs.Discount;
 using HeartwareManagementAPI.DTOs.Order;
 using HeartwareManagementAPI.DTOs.ProductDTO;
@@ -23,7 +24,9 @@ public class MappingProfile : Profile
         CreateMap<GetOrderById, Order>().ReverseMap();
         CreateMap<OrderDetail, OrderDetailsDto>().ReverseMap();   
 
-
+        //Category
+        CreateMap<Category, CategoryDTO>().ReverseMap();
+        
         //Discount
         CreateMap<DiscountGetFromOrder, Discount>().ReverseMap();
         
