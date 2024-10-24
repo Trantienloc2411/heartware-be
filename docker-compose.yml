@@ -1,0 +1,6 @@
+services:
+  heartwaremanagementapi:
+    image: ${DOCKER_REGISTRY-}heartwaremanagementapi
+    build:
+      context: .
+      dockerfile: HeartwareManagementAPI/Dockerfile

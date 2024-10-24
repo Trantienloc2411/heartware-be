@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeartwareManagementAPI", "HeartwareManagementAPI\HeartwareManagementAPI.csproj", "{A590ADCF-2B66-4C21-99C1-D8AF3745BBA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeartwareManagementAPI", "HeartwareManagementAPI\HeartwareManagementAPI.csproj", "{A590ADCF-2B66-4C21-99C1-D8AF3745BBA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObjects", "BusinessObjects\BusinessObjects.csproj", "{C5B3570A-6DB7-4D7C-8870-6D6BAE94A0F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObjects", "BusinessObjects\BusinessObjects.csproj", "{C5B3570A-6DB7-4D7C-8870-6D6BAE94A0F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{82B3144D-1FF9-48AE-BC0D-9958F4277DF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{82B3144D-1FF9-48AE-BC0D-9958F4277DF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{59952163-7612-4A82-95A3-D1FA920A1D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{59952163-7612-4A82-95A3-D1FA920A1D88}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1C0F07F6-6A49-40D9-9C2E-AB9F37B305DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{59952163-7612-4A82-95A3-D1FA920A1D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59952163-7612-4A82-95A3-D1FA920A1D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59952163-7612-4A82-95A3-D1FA920A1D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C0F07F6-6A49-40D9-9C2E-AB9F37B305DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C0F07F6-6A49-40D9-9C2E-AB9F37B305DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C0F07F6-6A49-40D9-9C2E-AB9F37B305DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C0F07F6-6A49-40D9-9C2E-AB9F37B305DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

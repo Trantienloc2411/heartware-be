@@ -4,11 +4,15 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>33dd627a-c8df-482c-8f05-b9029d8e1f79</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
@@ -18,10 +22,10 @@
       <ProjectReference Include="..\Repository\Repository.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DTOs\ProductDetailDTOs\" />
-      <Folder Include="wwwroot\static\" />
-    </ItemGroup>
+	<ItemGroup>
+		<Folder Include="DTOs\ProductDetailDTOs\" />
+		<Folder Include="wwwroot\static\" />
+	</ItemGroup>
 
     <ItemGroup>
       <None Include="wwwroot\static\index.html" />
