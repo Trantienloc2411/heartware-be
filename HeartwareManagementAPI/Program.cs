@@ -27,9 +27,8 @@ public class Program
                 configuration["PaymentEnvironment:PAYOS_API_KEY"] ?? throw new Exception("Cannot find environment"),
                 configuration["PaymentEnvironment:PAYOS_CHECKSUM_KEY"] ?? throw new Exception("Cannot find environment"));
             builder.Services.AddSingleton(payOS);
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddDbContext<MyDbContext>(options => 
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
+            options.UseNpgsql(builder.Configuration.GetConnectionString("Deploy")));
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
