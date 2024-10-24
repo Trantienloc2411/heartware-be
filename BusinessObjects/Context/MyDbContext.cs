@@ -38,7 +38,7 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(GetConnectionString());
+        => optionsBuilder.UseNpgsql(GetConnectionString());
 
 
     private string GetConnectionString()
@@ -67,11 +67,11 @@ public partial class MyDbContext : DbContext
 
             entity.ToTable("Discount");
 
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedDate).HasColumnType("timestamp");
             entity.Property(e => e.DiscountCode).HasMaxLength(10);
             entity.Property(e => e.DiscountName).HasMaxLength(10);
             entity.Property(e => e.DiscountValue).HasColumnType("decimal(4, 2)");
-            entity.Property(e => e.ExpiredDate).HasColumnType("datetime");
+            entity.Property(e => e.ExpiredDate).HasColumnType("timestamp");
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -80,11 +80,11 @@ public partial class MyDbContext : DbContext
 
             entity.Property(e => e.OrderId).ValueGeneratedNever();
             entity.Property(e => e.Address).HasMaxLength(255);
-            entity.Property(e => e.ConfirmDate).HasColumnType("datetime");
+            entity.Property(e => e.ConfirmDate).HasColumnType("timestamp");
             entity.Property(e => e.Email).HasMaxLength(255);
             entity.Property(e => e.FirstName).HasMaxLength(100);
             entity.Property(e => e.LastName).HasMaxLength(100);
-            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.OrderDate).HasColumnType("timestamp");
             entity.Property(e => e.Phone).HasMaxLength(20);
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(10, 2)");
 
@@ -116,12 +116,11 @@ public partial class MyDbContext : DbContext
 
             entity.Property(e => e.ProductId).ValueGeneratedNever();
             entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+                .HasColumnType("timestamp");
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductName).HasMaxLength(255);
-            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedDate).HasColumnType("timestamp");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
@@ -147,7 +146,7 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.Content).HasMaxLength(500);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+                .HasColumnType("timestamp");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.ProductId)
@@ -172,10 +171,10 @@ public partial class MyDbContext : DbContext
             entity.HasIndex(e => e.OrderId, "UQ_Shipping_OrderId").IsUnique();
 
             entity.Property(e => e.ShippingId).ValueGeneratedNever();
-            entity.Property(e => e.CancelDate).HasColumnType("datetime");
-            entity.Property(e => e.EndShipDate).HasColumnType("datetime");
+            entity.Property(e => e.CancelDate).HasColumnType("timestamp");
+            entity.Property(e => e.EndShipDate).HasColumnType("timestamp");
             entity.Property(e => e.ShippingAddress).HasMaxLength(255);
-            entity.Property(e => e.StartShipDate).HasColumnType("datetime");
+            entity.Property(e => e.StartShipDate).HasColumnType("timestamp");
             entity.Property(e => e.TrackingNumber).HasMaxLength(50);
         });
 
@@ -186,7 +185,7 @@ public partial class MyDbContext : DbContext
             entity.ToTable("User");
 
             entity.Property(e => e.UserId).ValueGeneratedNever();
-            entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
+            entity.Property(e => e.DateOfBirth).HasColumnType("timestamp");
             entity.Property(e => e.Email)
                 .HasMaxLength(125)
                 .IsUnicode(false);
