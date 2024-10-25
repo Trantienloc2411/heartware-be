@@ -1,49 +1,101 @@
 <html>
   <head>
     <title>Order Complete</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <style>
-      /* Add some basic styling to make the email look decent */
+      /* General styles */
       body {
-        font-family: Arial, sans-serif;
-        font-size: 14px;
+        font-family: "Oswald", sans-serif;
+        font-size: 16px;
+        color: #333;
+        background-color: #f3f4f6;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
       }
       .container {
         max-width: 600px;
-        margin: 40px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
+        margin: 50px auto;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e0e0e0;
+      }
+      h2 {
+        text-align: center;
+        color: black;
+      }
+      p {
+        margin: 15px 0;
+        color: #555;
+      }
+      table {
+        width: 100%;
+        margin: 20px 0;
+        border-collapse: collapse;
+      }
+      table, th, td {
         border: 1px solid #ddd;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      th, td {
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+        color: #333;
       }
       .button {
-        background-color: #4CAF50;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
+        display: block;
+        width: fit-content;
+        margin: 20px auto;
+        padding: 12px 25px;
+        background-color: black;
+        color: #ffffff;
+        text-align: center;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background-color 0.3s;
       }
       .button:hover {
-        background-color: #3e8e41;
+        background-color: #555;
+      }
+      .footer {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 14px;
+        color: #777;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2 style="text-align: center;">Đặt đơn hàng thành công</h2>
-      <p>Kính gửi, {{Fullname}},</p>
-      <p>Chúng tôi xác nhận đơn hàng này đã được đặt thành công, </p>
-      <p>Thông tin đơn hàng</p>
-      <ul>
-        <li>Mã đơn hàng: {{OrderId}}</li>
-        <li>Ngày đặt hàng: {{OrderDate}}</li>
-        <li>Số tiền: {{Total}}</li>
-      </ul>
-      <p>Để xem thông tin chi tiết về đơn hàng của bạn hãy truy cập vào nút bên dưới:</p>
+      <h2>Đặt đơn hàng thành công!</h2>
+      <p>Kính gửi {{Fullname}},</p>
+      <p>Chúng tôi vui mừng xác nhận rằng đơn hàng của bạn đã được đặt thành công. Dưới đây là thông tin chi tiết:</p>
+      <table>
+        <tr>
+          <th>Mã đơn hàng</th>
+          <td>{{OrderId}}</td>
+        </tr>
+        <tr>
+          <th>Ngày đặt hàng</th>
+          <td>{{OrderDate}}</td>
+        </tr>
+        <tr>
+          <th>Tổng số tiền</th>
+          <td>{{Total}}</td>
+        </tr>
+      </table>
+      <p>Để xem thông tin chi tiết về đơn hàng của bạn, vui lòng nhấn vào nút dưới đây:</p>
       <a href="http://heartware.vercel.app/TrackingOrder/{{OrderId}}" class="button">Xem đơn hàng chi tiết</a>
-      <p>Cảm ơn bạn đã đặt hàng bên chúng tôi. Nếu có những khúc mắc xin đừng ngần ngại liên hệ với chúng tôi</p>
-      <p>Trân Trọng,</p>
+      <p>Cảm ơn bạn đã đặt hàng tại Heartware. Nếu có bất kỳ thắc mắc nào, xin đừng ngần ngại liên hệ với chúng tôi.</p>
+      <p>Trân trọng,</p>
       <p>Heartware</p>
+      <div class="footer">
+        &copy; 2024 Heartware. Tất cả các quyền được bảo lưu.
+      </div>
     </div>
   </body>
 </html>
