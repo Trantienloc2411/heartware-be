@@ -130,10 +130,6 @@ public class OrderControllers : ControllerBase
                 else{
                     
                 }
-
-
-
-
                 return Ok();
             }
             catch (System.Exception ex)
