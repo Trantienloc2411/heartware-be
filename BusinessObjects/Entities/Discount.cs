@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Entities;
 
@@ -18,6 +19,6 @@ public partial class Discount
     public DateTime? ExpiredDate { get; set; }
 
     public Guid? CreatedById { get; set; }
-
+    [JsonIgnore]
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

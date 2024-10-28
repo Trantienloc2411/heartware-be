@@ -5,7 +5,6 @@ namespace HeartwareManagementAPI.DTOs.Order;
 
 public class AddOrder
 {
-    public Guid OrderId { get; set; }
     public int? PaymentMethod { get; set; }
 
     public int? DiscountId { get; set; }

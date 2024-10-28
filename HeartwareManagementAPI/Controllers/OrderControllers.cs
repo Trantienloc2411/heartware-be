@@ -58,6 +58,11 @@ public class OrderControllers : ControllerBase
         return Ok(result);
     }
 
+    private class ReturnObject 
+    {
+        public string OrderId {get;set;}
+        public string? PaymentLink {get;set;}
+     }
     [HttpPost]
     public async Task<ActionResult<Order>> Post(AddOrder order)
     {
@@ -69,6 +74,11 @@ public class OrderControllers : ControllerBase
                 Order o = new Order();
 
                 OrderDetail od;
+
+                Shipping s = new Shipping();
+
+       
+
 
                 o.OrderId = Guid.NewGuid();
                 o.UserId = null;
@@ -101,7 +111,21 @@ public class OrderControllers : ControllerBase
                     _unitOfWork.Save();
                 }
 
+                s.ShippingId = Guid.NewGuid();
+                s.OrderId =  o.OrderId;
+                s.ShippingAddress = o.Address;
+                s.StartShipDate = null;
+                s.EndShipDate = null;
+                s.CancelDate = null;
+                s.TrackingNumber = o.OrderId.ToString();
+
+                _unitOfWork.ShippingRepository.Insert(s);
+                _unitOfWork.Save();
+
                 transaction.Complete();
+
+                ReturnObject returnObject = new ReturnObject();
+
                 string fullname = o.FirstName + o.LastName;
                 SentMail.SendMailOrder(
                     _configuration,
@@ -112,7 +136,7 @@ public class OrderControllers : ControllerBase
                     (decimal)o.TotalAmount
                 );
 
-                if(order.PaymentMethod == 1)
+                if(order.PaymentMethod == 2)
                 {
                     string orderId = Regex.Replace(o.OrderId.ToString(), @"\D", "");
 
@@ -125,12 +149,18 @@ public class OrderControllers : ControllerBase
                     pay.description = "Order for id " + orderId;
                     pay.priceTotal =  Convert.ToInt32(o.TotalAmount);
                     string paymentlink = await _payment.CreatePaymentLink(pay);
-                    return Ok(paymentlink);
-                }
-                else{
+
+                    
+                    returnObject.OrderId = o.OrderId.ToString();
+                    returnObject.PaymentLink = paymentlink;
+
                     
                 }
-                return Ok();
+                else{
+                    returnObject.OrderId = o.OrderId.ToString();
+                }
+                
+                return Ok(returnObject);
             }
             catch (System.Exception ex)
             {
@@ -158,12 +188,14 @@ public class OrderControllers : ControllerBase
                 var s = await _unitOfWork.ShippingRepository.GetSingleWithIncludeAsync(c => c.OrderId == order.Id,
                     t => t.Order);
                 if (o == null) return NotFound("Can't find this order");
-                s.Order.UserId = order.UserId;
-                s.Order.ConfirmDate = order.ConfirmDate;
+                o.ConfirmDate = order.ConfirmDate;
+                s.StartShipDate = order.ConfirmDate;
                 o.OrderStatus = order.OrderStatus;
 
                 if (order.OrderStatus == 3)
                 {
+                    s.EndShipDate = DateTime.Now;
+                    
                     SentMail.SentMailComplete(
                         _configuration,
                         o.Email,
@@ -175,6 +207,7 @@ public class OrderControllers : ControllerBase
                 }
                 
                 _unitOfWork.OrderRepository.Update(o);
+                _unitOfWork.ShippingRepository.Update(s);
                 _unitOfWork.Save();
 
                 transaction.Complete();
@@ -183,7 +216,7 @@ public class OrderControllers : ControllerBase
             catch (System.Exception ex)
             {
                 transaction.Dispose();
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }

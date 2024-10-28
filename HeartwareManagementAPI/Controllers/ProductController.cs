@@ -61,7 +61,7 @@ public class ProductController : ControllerBase
             CategoryId = addProductDto.CategoryId,
             ImageUrl = trimmedImageUrl,
             ProductStatus= (int)addProductDto.ProductStatus,
-            CreatedDate = DateTime.UtcNow,
+            CreatedDate = DateTime.Now,
         };
         _unitOfWork.ProductRepository.Insert(newProduct);
 
