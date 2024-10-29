@@ -16,11 +16,11 @@ namespace HeartwareManagementAPI.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Post(Guid productId,[FromBody])
-        {
+        //[HttpPost]
+        //public IActionResult Post(Guid productId,[FromBody])
+        //{
 
-        }
+        //}
 
     }
 }
