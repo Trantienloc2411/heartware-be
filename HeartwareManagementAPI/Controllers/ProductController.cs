@@ -24,11 +24,17 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<ProductDTO>> GetAllProducts()
     {
+        var orderDetails = _unitOfWork.OrderDetailRepository.GetAll();
         var products = await _unitOfWork.ProductRepository.GetAllWithIncludeAsync(p => true,
             p => p.Reviews,
             p => p.Category,
             pd=>pd.ProductDetails);
+
         var productDTOs = _mapper.Map<IEnumerable<ProductDTO>>(products);
+        foreach (var product in productDTOs)
+        {
+            product.ItemBought = orderDetails.Where(c => c.ProductId == product.ProductId).Count();
+        }
         return productDTOs;
     }
     
