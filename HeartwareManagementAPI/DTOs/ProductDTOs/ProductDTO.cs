@@ -24,6 +24,8 @@ public class ProductDTO
 
     public DateTime? UpdatedDate { get; set; }
 
+    public int? ItemBought {get;set;}
+
     public string? ImageUrl { get; set; }
     public ICollection<ReviewDTO> Reviews { get; set; } = new List<ReviewDTO>();
     public ICollection<ProductDetailsDTO> ProductDetails { get; set; } = new List<ProductDetailsDTO>();
