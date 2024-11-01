@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BusinessObjects.Migration
+namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(MyDbContext))]
     partial class MyDbContextModelSnapshot : ModelSnapshot
@@ -52,7 +52,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("DiscountCode")
                         .HasMaxLength(10)
@@ -66,7 +66,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("decimal(4, 2)");
 
                     b.Property<DateTime?>("ExpiredDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.HasKey("DiscountId")
                         .HasName("PK__Discount__E43F6D965CFB55C2");
@@ -84,7 +84,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("ConfirmDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<int?>("DiscountId")
                         .HasColumnType("integer");
@@ -102,7 +102,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("OrderDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<int?>("OrderStatus")
                         .HasColumnType("integer");
@@ -165,9 +165,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -190,7 +188,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.HasKey("ProductId")
                         .HasName("PK__Product__B40CC6CD1C56FD70");
@@ -241,7 +239,7 @@ namespace BusinessObjects.Migration
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
+                        .HasColumnType("timestamp")
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<Guid?>("ProductId")
@@ -285,10 +283,10 @@ namespace BusinessObjects.Migration
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("CancelDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<DateTime?>("EndShipDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
@@ -298,7 +296,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("StartShipDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("TrackingNumber")
                         .HasMaxLength(50)
@@ -319,7 +317,7 @@ namespace BusinessObjects.Migration
                         .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Email")
                         .HasMaxLength(125)
@@ -391,7 +389,9 @@ namespace BusinessObjects.Migration
                 {
                     b.HasOne("BusinessObjects.Entities.Product", "Product")
                         .WithMany("ProductDetails")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_ProductDetail_Product");
 
                     b.Navigation("Product");
                 });

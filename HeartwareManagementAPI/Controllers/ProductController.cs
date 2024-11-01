@@ -104,7 +104,7 @@ public class ProductController : ControllerBase
         _mapper.Map(updateProductDto, existingProduct);
         
         existingProduct.CreatedDate = createdDate;
-        existingProduct.UpdatedDate = DateTime.UtcNow;
+        existingProduct.UpdatedDate = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
 
         if (updateProductDto.ProductDetails != null && updateProductDto.ProductDetails.Any())
         {

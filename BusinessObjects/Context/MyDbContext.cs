@@ -135,6 +135,11 @@ public partial class MyDbContext : DbContext
 
             entity.Property(e => e.ProductParam).HasMaxLength(255);
             entity.Property(e => e.ProductValue).HasMaxLength(255);
+            entity.HasOne(d => d.Product)
+                .WithMany(p => p.ProductDetails)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade) 
+       .        HasConstraintName("FK_ProductDetail_Product");
         });
 
         modelBuilder.Entity<Review>(entity =>
